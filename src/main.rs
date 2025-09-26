@@ -2,7 +2,17 @@ mod logger;
 use logger::log;
 
 fn main() {
-    log("Server started".to_string()).info();  // prints immediately
-    log("Disk space low".to_string()).warn();
-    log("Failed to connect".to_string()).error();
+    // Using builder
+    log("Hello, world!".to_string())
+        .timestamp()
+        .code(42)
+        .info()   // builds the Logger
+        .print(); // actually prints it
+
+    // Or directly
+    let logger = log("Something went wrong".to_string())
+        .code(404)
+        .error(); // builds Logger
+
+    logger.print(); // prints it
 }
