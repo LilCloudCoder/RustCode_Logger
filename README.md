@@ -18,7 +18,7 @@ A simple, colorful, and flexible logging library for Rust with support for times
 
 ## Installation
 
-Add `cozy_logger` to your `Cargo.toml`:
+Add `code_logger` to your `Cargo.toml`:
 
 ```toml
 [dependencies]
