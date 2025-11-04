@@ -56,7 +56,7 @@ impl Logger {
             };
             format!("{}[{}]{}", c, tag, colors.reset)
         } else {
-            (format!("[{}]", match self.level { Level::Info => "INFO", Level::Warn => "WARN", Level::Error => "ERROR", Level::Debug => "DEBUG" }), String::new())
+            format!("[{}]", match self.level { Level::Info => "INFO", Level::Warn => "WARN", Level::Error => "ERROR", Level::Debug => "DEBUG" })
         };
 
         let code_str = if let Some(c) = self.code {
