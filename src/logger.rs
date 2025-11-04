@@ -37,6 +37,9 @@ pub struct Logger {
     pub level: Level,
     pub code: Option<i32>,
     pub timestamp: bool,
+    pub ts_format: Option<String>,
+    pub colors: Option<AnsiColors>,
+    pub color_enabled: bool,
 }
 
 impl Logger {
