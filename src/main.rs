@@ -9,8 +9,8 @@ fn main() {
         .info()
         .print();
 
-    // Or directly
-    let logger = log("Something went wrong".to_string())
+    // Error goes to stderr
+    log("Something went wrong".to_string())
         .code(404)
         .error(); // builds Logger
 
