@@ -64,7 +64,7 @@ impl Logger {
             let fmt = self.ts_format.as_deref().unwrap_or("%Y-%m-%d %H:%M:%S");
             format!("[{}] ", Local::now().format(fmt))
         } else {
-            "".to_string()
+            String::new()
         };
 
         println!("{}{} {} {}", ts, prefix, self.message, code_str);
