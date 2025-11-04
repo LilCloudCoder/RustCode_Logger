@@ -33,7 +33,7 @@ code_logger = "..."
 use code_logger::log; // if used as a library crate
 
 fn main() {
-    // Using builder
+    // Basic with timestamp and code
     log("Hello, world!".to_string())
         .timestamp()
         .code(42)
