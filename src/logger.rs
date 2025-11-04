@@ -67,7 +67,14 @@ impl Logger {
             String::new()
         };
 
-        println!("{}{} {} {}", ts, prefix, self.message, code_str);
+        // Optional code
+        let code_str = self.code.map(|c| format!(" (code {})", c)).unwrap_or_default();
+
+        // Select output stream: warnings/errors to stderr; others to stdout
+        match self.level {
+            Level::Warn | Level::Error => eprintln!("{}{} {}{}", ts, prefix, self.message, code_str),
+            _ => println!("{}{} {}{}", ts, prefix, self.message, code_str),
+        }
     }
 
     pub fn info(&self) { self.print(); }
