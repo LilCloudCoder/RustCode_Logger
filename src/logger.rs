@@ -45,15 +45,16 @@ pub struct Logger {
 impl Logger {
     pub fn print(&self) {
         // Resolve color prefix
-        let (prefix, reset) = if self.color_enabled {
-            let colors = self.colors.as_ref().unwrap_or(&AnsiColors::default());
+        let prefix = if self.color_enabled {
+            let colors = self.colors.as_ref().cloned().unwrap_or_default();
             let (c, tag) = match self.level {
-                Level::Info => (&colors.info, "INFO"),
+
+                    evel::Info => (&colors.info, "INFO"),
                 Level::Warn => (&colors.warn, "WARN"),
                 Level::Error => (&colors.error, "ERROR"),
                 Level::Debug => (&colors.debug, "DEBUG"),
             };
-            (format!("{}[{}]{}", c, tag, colors.reset), colors.reset.clone())
+            format!("{}[{}]{}", c, tag, colors.reset)
         } else {
             (format!("[{}]", match self.level { Level::Info => "INFO", Level::Warn => "WARN", Level::Error => "ERROR", Level::Debug => "DEBUG" }), String::new())
         };
