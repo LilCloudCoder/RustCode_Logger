@@ -32,5 +32,14 @@ fn main() {
     custom.info = "\x1b[35m".to_string(); // magenta
     custom.warn = "\x1b[36m".to_string(); // cyan
 
-    logger.print(); // prints it
+    log("Custom color config".to_string())
+        .colors(custom)
+        .info()
+        .print();
+
+    // Override a single level color quickly
+    log("Only ERROR is white on red".to_string())
+        .color_for_level(Level::Error, "\x1b[97;41m")
+        .error()
+        .print();
 }
