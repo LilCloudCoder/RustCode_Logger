@@ -1,5 +1,5 @@
 mod logger;
-use logger::log;
+use logger::{log, AnsiColors, Level};
 
 fn main() {
     // Using builder
