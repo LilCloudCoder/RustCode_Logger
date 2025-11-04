@@ -2,7 +2,7 @@ mod logger;
 use logger::{log, AnsiColors, Level};
 
 fn main() {
-    // Using builder
+    // Basic with timestamp and code
     log("Hello, world!".to_string())
         .timestamp()
         .code(42)
