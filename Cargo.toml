@@ -1,6 +1,6 @@
 [package]
 name = "code_logger"
-version = "0.1.0"
+version = "0.1.2"
 authors = ["Yogya <yogya.coder@gmail.com>"]
 edition = "2021"
 description = "A simple, colorful, and flexible logging library for Rust with timestamps, log levels, and custom error codes."
