@@ -59,8 +59,10 @@ impl Logger {
             format!("[{}]", match self.level { Level::Info => "INFO", Level::Warn => "WARN", Level::Error => "ERROR", Level::Debug => "DEBUG" })
         };
 
-        let code_str = if let Some(c) = self.code {
-            format!("(code {})", c)
+        // Timestamp
+        let ts = if self.timestamp {
+            let fmt = self.ts_format.as_deref().unwrap_or("%Y-%m-%d %H:%M:%S");
+            format!("[{}] ", Local::now().format(fmt))
         } else {
             "".to_string()
         };
