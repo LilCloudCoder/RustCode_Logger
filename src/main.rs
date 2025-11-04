@@ -6,8 +6,8 @@ fn main() {
     log("Hello, world!".to_string())
         .timestamp()
         .code(42)
-        .info()   // builds the Logger
-        .print(); // actually prints it
+        .info()
+        .print();
 
     // Or directly
     let logger = log("Something went wrong".to_string())
