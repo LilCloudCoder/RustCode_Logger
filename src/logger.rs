@@ -1,7 +1,7 @@
 use chrono::Local;
 
 /// Log levels
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub enum Level {
     Info,
     Warn,
