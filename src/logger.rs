@@ -48,8 +48,7 @@ impl Logger {
         let prefix = if self.color_enabled {
             let colors = self.colors.as_ref().cloned().unwrap_or_default();
             let (c, tag) = match self.level {
-
-                    evel::Info => (&colors.info, "INFO"),
+                Level::Info => (&colors.info, "INFO"),
                 Level::Warn => (&colors.warn, "WARN"),
                 Level::Error => (&colors.error, "ERROR"),
                 Level::Debug => (&colors.debug, "DEBUG"),
@@ -88,38 +87,78 @@ pub struct LoggerBuilder {
     pub message: String,
     pub code: Option<i32>,
     pub timestamp: bool,
+    pub ts_format: Option<String>,
+    pub colors: Option<AnsiColors>,
+    pub color_enabled: bool,
 }
 
 impl LoggerBuilder {
     pub fn new(message: String) -> Self {
-        Self { message, code: None, timestamp: false }
+        Self { message, code: None, timestamp: false, ts_format: None, colors: None, color_enabled: true }
     }
 
+    /// Set a custom code to be appended to the message.
     pub fn code(mut self, code: i32) -> Self {
         self.code = Some(code);
         self
     }
 
+    /// Enable timestamps with default format.
     pub fn timestamp(mut self) -> Self {
         self.timestamp = true;
+        if self.ts_format.is_none() { self.ts_format = Some("%Y-%m-%d %H:%M:%S".to_string()); }
         self
     }
 
-    pub fn info(self) -> Logger {
-        Logger { message: self.message, level: Level::Info, code: self.code, timestamp: self.timestamp }
+    /// Use a custom timestamp format (enables timestamping).
+    pub fn timestamp_format<S: Into<String>>(mut self, fmt: S) -> Self {
+        self.timestamp = true;
+        self.ts_format = Some(fmt.into());
+        self
     }
 
-    pub fn warn(self) -> Logger {
-        Logger { message: self.message, level: Level::Warn, code: self.code, timestamp: self.timestamp }
+    /// Disable ANSI colors in output.
+    pub fn no_color(mut self) -> Self {
+        self.color_enabled = false;
+        self
     }
 
-    pub fn error(self) -> Logger {
-        Logger { message: self.message, level: Level::Error, code: self.code, timestamp: self.timestamp }
+    /// Provide full custom ANSI color codes for all levels.
+    pub fn colors(mut self, colors: AnsiColors) -> Self {
+        self.colors = Some(colors);
+        self
     }
 
-    pub fn debug(self) -> Logger {
-        Logger { message: self.message, level: Level::Debug, code: self.code, timestamp: self.timestamp }
+    /// Override color for a specific level with a raw ANSI code prefix (e.g., "\x1b[35m").
+    pub fn color_for_level<S: Into<String>>(mut self, level: Level, ansi_prefix: S) -> Self {
+        let mut cfg = self.colors.take().unwrap_or_default();
+        let s = ansi_prefix.into();
+        match level {
+            Level::Info => cfg.info = s,
+            Level::Warn => cfg.warn = s,
+            Level::Error => cfg.error = s,
+            Level::Debug => cfg.debug = s,
+        }
+        self.colors = Some(cfg);
+        self
     }
+
+    fn build(self, level: Level) -> Logger {
+        Logger {
+            message: self.message,
+            level,
+            code: self.code,
+            timestamp: self.timestamp,
+            ts_format: self.ts_format,
+            colors: self.colors,
+            color_enabled: self.color_enabled,
+        }
+    }
+
+    pub fn info(self) -> Logger { self.build(Level::Info) }
+    pub fn warn(self) -> Logger { self.build(Level::Warn) }
+    pub fn error(self) -> Logger { self.build(Level::Error) }
+    pub fn debug(self) -> Logger { self.build(Level::Debug) }
 }
 
 /// Entry function
