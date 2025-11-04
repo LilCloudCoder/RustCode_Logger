@@ -9,6 +9,28 @@ pub enum Level {
     Debug,
 }
 
+/// ANSI color configuration for each level.
+#[derive(Debug, Clone)]
+pub struct AnsiColors {
+    pub info: String,
+    pub warn: String,
+    pub error: String,
+    pub debug: String,
+    pub reset: String,
+}
+
+impl Default for AnsiColors {
+    fn default() -> Self {
+        Self {
+            info: "\x1b[32m".to_string(),  // green
+            warn: "\x1b[33m".to_string(),  // yellow
+            error: "\x1b[31m".to_string(), // red
+            debug: "\x1b[34m".to_string(), // blue
+            reset: "\x1b[0m".to_string(),
+        }
+    }
+}
+
 /// Logger struct
 pub struct Logger {
     pub message: String,
