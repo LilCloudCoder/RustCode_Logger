@@ -55,7 +55,7 @@ impl Logger {
             };
             (format!("{}[{}]{}", c, tag, colors.reset), colors.reset.clone())
         } else {
-            "".to_string()
+            (format!("[{}]", match self.level { Level::Info => "INFO", Level::Warn => "WARN", Level::Error => "ERROR", Level::Debug => "DEBUG" }), String::new())
         };
 
         let code_str = if let Some(c) = self.code {
