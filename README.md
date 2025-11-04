@@ -25,8 +25,13 @@ Add `code_logger` to your `Cargo.toml`:
 code_logger = "..."
 ```
 
-### Usage:
-```Rust
+---
+
+## Quick start
+
+```rust
+use code_logger::log; // if used as a library crate
+
 fn main() {
     // Using builder
     log("Hello, world!".to_string())
