@@ -44,15 +44,16 @@ pub struct Logger {
 
 impl Logger {
     pub fn print(&self) {
-        let prefix = match self.level {
-            Level::Info => "\x1b[32m[INFO]\x1b[0m",
-            Level::Warn => "\x1b[33m[WARN]\x1b[0m",
-            Level::Error => "\x1b[31m[ERROR]\x1b[0m",
-            Level::Debug => "\x1b[34m[DEBUG]\x1b[0m",
-        };
-
-        let ts = if self.timestamp {
-            format!("[{}] ", Local::now().format("%Y-%m-%d %H:%M:%S"))
+        // Resolve color prefix
+        let (prefix, reset) = if self.color_enabled {
+            let colors = self.colors.as_ref().unwrap_or(&AnsiColors::default());
+            let (c, tag) = match self.level {
+                Level::Info => (&colors.info, "INFO"),
+                Level::Warn => (&colors.warn, "WARN"),
+                Level::Error => (&colors.error, "ERROR"),
+                Level::Debug => (&colors.debug, "DEBUG"),
+            };
+            (format!("{}[{}]{}", c, tag, colors.reset), colors.reset.clone())
         } else {
             "".to_string()
         };
